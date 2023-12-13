@@ -17,7 +17,7 @@ COPY . .
 EXPOSE 3000
 
 # Define environment variable
-ENV NODE_ENV=production
+# ENV NODE_ENV=production
 
 # Command to run the application
 CMD ["node", "server.js"]
