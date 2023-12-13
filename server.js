@@ -7,9 +7,15 @@ const port = 3000; // You can change the port number as needed
 const uri = 'mongodb+srv://saitarakaram:L2HwgE8VLais1o5l@cluster0.opravw6.mongodb.net/?retryWrites=true&w=majority'; // Replace with your MongoDB connection string
 
 app.get('/api/products', async (req, res) => {
+  let client; // Declare the client variable outside the try block
+
   try {
     // Create a new MongoClient
-    const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+    app.get('/', (req, res) => {
+      res.send('Hello NODE API');
+    });
 
     // Connect to the MongoDB server
     await client.connect();
@@ -27,10 +33,12 @@ app.get('/api/products', async (req, res) => {
     res.status(500).json({ error: 'An error occurred while fetching products' });
   } finally {
     // Close the connection when done
-    client.close();
+    if (client) {
+      client.close();
+    }
   }
 });
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
-})
+});
